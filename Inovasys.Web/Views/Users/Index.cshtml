@@ -1,0 +1,138 @@
+﻿@model List<UserViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col">
+            <h2>Users</h2>
+        </div>
+    </div>
+
+    <partial name="_DisplayMessagePartial"/>
+
+    <form asp-action="ReloadFromApi" method="post" id="reloadForm">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-warning" id="reloadBtn">
+            <i class="bi bi-arrow-clockwise"></i> Reload from API
+        </button>
+    </form>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            No users to display. Please check API connection.
+        </div>
+    }
+    else
+    {
+        <form asp-action="SaveAll" method="post" id="usersForm">
+            @Html.AntiForgeryToken()
+            @foreach (var u in Model)
+            {
+                var addr = u.Address!;
+
+                <input type="hidden" name="users[@u.Id].Id" value="@u.Id" />
+                <input type="hidden" name="users[@u.Id].Name" value="@u.Name" />
+                <input type="hidden" name="users[@u.Id].Username" value="@u.Username" />
+                <input type="hidden" name="users[@u.Id].Email" value="@u.Email" />
+                <input type="hidden" name="users[@u.Id].Phone" value="@(u.Phone ?? "")" />
+                <input type="hidden" name="users[@u.Id].Website" value="@(u.Website ?? "")" />
+                <input type="hidden" name="users[@u.Id].Password" value="@(u.Password ?? "")" class="password-input" data-user-id="@u.Id" />
+                <input type="hidden" name="users[@u.Id].Note" value="@(u.Note ?? "")" class="note-input" data-user-id="@u.Id" />
+
+                <input type="hidden" name="users[@u.Id].Address.Street" value="@(addr.Street ?? "")" />
+                <input type="hidden" name="users[@u.Id].Address.Suite" value="@(addr.Suite ?? "")" />
+                <input type="hidden" name="users[@u.Id].Address.City" value="@(addr.City ?? "")" />
+                <input type="hidden" name="users[@u.Id].Address.Zipcode" value="@(addr.Zipcode ?? "")" />
+                <input type="hidden" name="users[@u.Id].Address.Lat" value="@addr.Lat" />
+                <input type="hidden" name="users[@u.Id].Address.Lng" value="@addr.Lng" />
+            }
+
+            <table id="usersTable" class="table table-bordered table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Website</th>
+                        <th>Address</th>
+                        <th class="text-center">Active</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var u in Model)
+                    {
+                        var hasValidPassword = !string.IsNullOrWhiteSpace(u.Password) && u.Password.Length >= 8;
+                        var addr = u.Address ?? new AddressViewModel();
+
+                        <tr class="@(!hasValidPassword ? "password-invalid" : "")" data-user-id="@u.Id">
+                            <td>@u.Name</td>
+                            <td>@u.Username</td>
+                            <td>@u.Email</td>
+                            <td>@u.Phone</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(u.Website))
+                                {
+                                    <a href="https://@u.Website" target="_blank">
+                                        @u.Website
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">N/A</span>
+                                }
+                            </td>
+                            <td class="address-cell text-center"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#addr-@u.Id"
+                                aria-expanded="false"
+                                aria-controls="addr-@u.Id">
+
+                                <div class="text-center justify-content-between align-items-center">
+                                    @addr.Street@(!string.IsNullOrEmpty(addr.Suite) ? ", " + addr.Suite : "")<br />
+                                    @addr.City@(!string.IsNullOrEmpty(addr.Zipcode) ? ", " + addr.Zipcode : "")<br />
+                                    <div class="collapse mt-2" id="addr-@u.Id">
+                                        <small class="text-muted">Lat: @addr.Lat, Lng: @addr.Lng</small>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td class="text-center">
+                                <div class="form-check form-switch d-flex justify-content-center">
+                                    <input type="checkbox" class="form-check-input" id="isActive_@u.Id" name="users[@u.Id].IsActive" value="true" @(u.IsActive ? "checked" : "") />
+                                    <input type="hidden" name="users[@u.Id].IsActive" value="false" />
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                @if (!hasValidPassword)
+                                {
+                                    <span class="badge bg-danger mb-2" title="Password required (min 8 characters)">
+                                        <i class="bi bi-exclamation-triangle-fill"></i> Password Required
+                                    </span>
+                                    <br />
+                                }
+                                <button type="button" class="btn btn-sm btn-outline-primary edit-user-btn" data-userid="@u.Id" data-name="@u.Name" title="Edit Note and Password">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-end align-items-center mt-3">
+                <div>
+                    <button type="submit" form="usersForm" class="btn btn-success" id="saveAllBtn">
+                        Save changes <i class="bi bi-floppy"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <partial name="_InputModalPartial" />
+    }
+</div>

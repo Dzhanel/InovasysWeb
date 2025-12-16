@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace InovaSys.Data.Interfaces
+namespace Inovasys.Data.Interfaces
 {
     public interface IDapperContext
     {

@@ -1,0 +1,75 @@
+﻿<div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-pencil-square me-2"></i>
+                    Edit User: <span id="modalUserName"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <input type="hidden" id="modalIndex" />
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="bi bi-sticky me-1"></i>Note
+                    </label>
+                    <textarea id="modalNote"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Enter additional notes..."></textarea>
+                    <small class="text-muted">
+                        Optional field for additional information
+                    </small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="bi bi-key me-1"></i>Password
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <div class="input-group">
+                        <input type="password"
+                               id="modalPassword"
+                               class="form-control"
+                               placeholder="Enter password (min 8 characters)"
+                               required />
+
+                        <button type="button"
+                                class="btn btn-outline-secondary"
+                                id="genPassBtn"
+                                title="Generate Password">
+                            Generate
+                        </button>
+                    </div>
+
+                    <div id="passwordFeedback"
+                         class="invalid-feedback"
+                         style="display:none;">
+                        Password is required (min 8 characters)
+                    </div>
+
+                    <small class="text-muted">
+                        Minimum 8 characters required.
+                    </small>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Cancel
+                </button>
+
+                <button type="button"
+                        class="btn btn-primary"
+                        id="saveModalBtn">
+                    <i class="bi bi-check-circle me-1"></i>Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

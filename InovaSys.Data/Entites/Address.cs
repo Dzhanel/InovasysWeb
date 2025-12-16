@@ -7,34 +7,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InovaSys.Data.Entites
+namespace Inovasys.Data.Entites
 {
     public class Address
     {
-        //public Guid Id { get; set; }
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Street name can't be longer than 100 characters!")]
+        [StringLength(100)]
         public required string Street { get; set; }
         
         [AllowNull]
-        [StringLength(100, ErrorMessage = "Suite name can't be longer than 100 characters!")]
-        public string Suite { get; set; }
+        [StringLength(100)]
+        public string? Suite { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "City name can't be longer than 100 characters!")]
+        [StringLength(100)]
         public required string City { get; set; }
 
-        [AllowNull]
-        [MaxLength(10, ErrorMessage = "Maximum length for zip code is 10 characters!")]
-        public string ZipCode { get; set; }
+        [MaxLength(10)]
+        public string? Zipcode { get; set; }
 
-        [Range(-90.0, 90.0, ErrorMessage = "Incorrect latitude")]
+        [Range(-90.0, 90.0)]
         public double Latitude { get; set; }
 
-        [Range(-180.0, 180.0, ErrorMessage = "Incorect longitude")]
+        [Range(-180.0, 180.0)]
         public double Longitude { get; set; }
 
         [ForeignKey("User")]

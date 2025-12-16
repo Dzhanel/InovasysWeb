@@ -1,9 +1,9 @@
-﻿using InovaSys.Data.Interfaces;
+﻿using Inovasys.Data.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
-namespace InovaSys.Data.Dapper
+namespace Inovasys.Data.Dapper
 {
     public class DapperContext : IDapperContext
     {

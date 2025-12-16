@@ -1,8 +1,11 @@
-﻿using InovaSys.Data.Entites;
+﻿using Inovasys.Data.Entites;
 
 namespace Inovasys.Data.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserUserRepository
     {
+        Task<IEnumerable<User>> GetAllAsync();
+        Task<bool> ReplaceAllAsync(ICollection<User> users);
+        Task<int> UserCount();
     }
 }

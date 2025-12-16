@@ -1,42 +1,37 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
-namespace InovaSys.Data.Entites
+namespace Inovasys.Data.Entites
 {
     public class User
     {
-        //[Key]
-        //public Guid Id { get; set; }
-
         [Key]
         public int Id { get; set; }
 
-        [StringLength(100, ErrorMessage = "Maximum length for name is 100 characters!")]
+        [StringLength(100)]
         public required string Name { get; set; }
-        [StringLength(100, ErrorMessage = "Maximum length for username is 100 characters!")]
+        [StringLength(100)]
 
         public required string Username { get; set; }
 
-        [StringLength(200, ErrorMessage = "Maximum length for password is 200 characters!")]
+        [StringLength(200)]
         public required string Password { get; set; }
 
-        [EmailAddress]
-        [StringLength(200, ErrorMessage = "Maximum length for email is 200 characters!")]
+        [StringLength(200)]
 
         public required string Email { get; set; }
 
-        [AllowNull]
-        [StringLength(30, ErrorMessage = "Maximum length for phone is 30 characters!")]
-        public string Phone { get; set; }
+        [StringLength(30)]
+        public string? Phone { get; set; }
+        public string? Website { get; set; }
+        public string? Note { get; set; }
 
-        [AllowNull]
-        public string Website { get; set; }
-        [AllowNull]
-        public string Note { get; set; }
-
-        public byte IsActive { get; set; }
+        public bool IsActive { get; set; }
 
         public DateTime CreatedAt { get; set; }
+
+        public Address? Address { get; set; }
 
     }
 }
